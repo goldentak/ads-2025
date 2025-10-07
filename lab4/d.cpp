@@ -26,19 +26,6 @@ Node* insertNode(Node* root, int data){
     return root;
 }
 
-Node* searchNode(Node* root, int key){
-    if(root == nullptr || root->data == key) return root;
-    
-    if(key < root->data) return searchNode(root->left, key);
-    
-    return searchNode(root->right, key);
-}
-
-int subtreeSize(Node* root){
-    if(root == nullptr) return 0;
-    return 1 + subtreeSize(root->left) + subtreeSize(root->right);
-}
-
 int main(){
     int n; cin >> n;
     
@@ -47,8 +34,26 @@ int main(){
         int m; cin >> m;
         root = insertNode(root, m);
     }
-    int k; cin >> k;
-    cout << subtreeSize(searchNode(root, k));
+    
+    queue<Node*> q;
+    q.push(root);
+    vector<int> ans;
+    
+    while(!q.empty()){
+        int size = q.size();
+        int sum = 0;
+        for(int i = 0; i < size; i++){
+            Node* u = q.front(); q.pop();
+            sum += u->data;
+            
+            if(u->left) q.push(u->left);
+            if(u->right) q.push(u->right);
+        }
+        ans.push_back(sum);
+    }
+    
+    cout << ans.size() << endl;
+    for(int it : ans) cout << it << " ";
     
     return 0;
 }

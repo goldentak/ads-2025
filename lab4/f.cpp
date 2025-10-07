@@ -26,17 +26,13 @@ Node* insertNode(Node* root, int data){
     return root;
 }
 
-Node* searchNode(Node* root, int key){
-    if(root == nullptr || root->data == key) return root;
-    
-    if(key < root->data) return searchNode(root->left, key);
-    
-    return searchNode(root->right, key);
-}
-
-int subtreeSize(Node* root){
-    if(root == nullptr) return 0;
-    return 1 + subtreeSize(root->left) + subtreeSize(root->right);
+int sum = 0;
+void preOrderTraversal(Node* root){
+    if(root != nullptr){
+        if(root->left && root->right) sum++;
+        preOrderTraversal(root->left);
+        preOrderTraversal(root->right);
+    }
 }
 
 int main(){
@@ -48,7 +44,9 @@ int main(){
         root = insertNode(root, m);
     }
     int k; cin >> k;
-    cout << subtreeSize(searchNode(root, k));
+    preOrderTraversal(root);
+    
+    cout << sum;
     
     return 0;
 }
